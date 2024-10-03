@@ -292,6 +292,12 @@ class EngineArgs:
             'data type. CUDA 11.8+ supports fp8 (=fp8_e4m3) and fp8_e5m2. '
             'ROCm (AMD GPU) supports fp8 (=fp8_e4m3)')
         parser.add_argument(
+            '--sparse-kv-cahce-type',
+            type=str,
+            choices=['auto', 'h20', 'anl'],
+            default=EngineArgs.sparse_kv_cache_type,
+            help='Sparse kv cache type. If "auto", will use model data type.')
+        parser.add_argument(
             '--quantization-param-path',
             type=nullable_str,
             default=None,
