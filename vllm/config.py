@@ -609,6 +609,7 @@ class CacheConfig:
         gpu_memory_utilization: float,
         swap_space: float,
         cache_dtype: str,
+        sparse_cache_type: str,
         num_gpu_blocks_override: Optional[int] = None,
         sliding_window: Optional[int] = None,
         enable_prefix_caching: bool = False,
@@ -624,6 +625,7 @@ class CacheConfig:
         self.cpu_offload_gb = cpu_offload_gb
         self._verify_args()
         self._verify_cache_dtype()
+        self._verify_cache_sparse_type()
         self._verify_prefix_caching()
 
         # Will be set after profiling.
@@ -652,6 +654,16 @@ class CacheConfig:
                 "scaling factor")
         else:
             raise ValueError(f"Unknown kv cache dtype: {self.cache_dtype}")
+
+    def _verify_cache_sparse_type(self) -> None:
+        if self.sparse_cahce_type == "auto":
+            pass
+        elif self.sparse_cache_type in ("h20"):
+            print("Using h2o sparse cache type. NOT IMPLEMENTED. ")
+        elif self.sparse_cache_type in ("anl"):
+            print("Using anl sparse cache type")
+        else:                                        
+            raise ValueError(f"Unknown sparse kv cache dtype: {self.sparse_cahce_type}")
 
     def _verify_prefix_caching(self) -> None:
         if not self.enable_prefix_caching:
